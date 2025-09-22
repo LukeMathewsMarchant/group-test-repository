@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn GitHub - Interactive Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #24292f;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 25px;
+            padding: 3px;
+            margin: 30px 0;
+        }
+
+        .progress {
+            background: linear-gradient(90deg, #28a745, #34d058);
+            height: 20px;
+            border-radius: 25px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .tab {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .tab.active {
+            background: #28a745;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .content {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #0366d6;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        h3 {
+            color: #28a745;
+            margin: 25px 0 15px 0;
+            font-size: 1.3rem;
+        }
+
+        .code-block {
+            background: #f6f8fa;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .command {
+            background: #24292f;
+            color: #f0f6fc;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 10px 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .tip {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .checklist {
+            background: #d4edda;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .interactive-demo {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .git-visual {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f1f8ff;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .git-stage {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e1e4e8;
+            transition: all 0.3s ease;
+        }
+
+        .git-stage.highlight {
+            border-color: #28a745;
+            background: #f0fff4;
+            transform: scale(1.02);
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: #0366d6;
+            margin: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .tabs { flex-direction: column; align-items: center; }
+            .tab { width: 200px; }
+            .git-visual { flex-direction: column; }
+            .arrow { transform: rotate(90deg); }
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Learn GitHub</h1>
+            <p class="subtitle">Master version control and collaboration with this interactive tutorial</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" data-section="basics">Getting Started</button>
+            <button class="tab" data-section="repositories">Repositories</button>
+            <button class="tab" data-section="commits">Commits & Changes</button>
+            <button class="tab" data-section="branching">Branching</button>
+            <button class="tab" data-section="collaboration">Collaboration</button>
+            <button class="tab" data-section="advanced">Advanced Features</button>
+        </div>
+
+        <div class="content">
+            <!-- Getting Started Section -->
+            <div class="section active" id="basics">
+                <h2>🎯 Getting Started with GitHub</h2>
+                
+                <h3>What is GitHub?</h3>
+                <p>GitHub is a cloud-based platform that uses Git for version control. It allows developers to store, manage, and track changes to their code, collaborate with others, and contribute to open-source projects.</p>
+
+                <div class="tip">
+                    <strong>💡 Pro Tip:</strong> Think of GitHub as Google Drive for developers - but with superpowers for tracking every change made to your files!
+                </div>
+
+                <h3>Setting Up Your Account</h3>
+                <div class="checklist">
+                    <h4>📝 Setup Checklist</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="signup">
+                        <label for="signup">Sign up at github.com with a professional username</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="profile">
+                        <label for="profile">Complete your profile with photo and bio</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="email">
+                        <label for="email">Verify your email address</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="git-install">
+                        <label for="git-install">Install Git on your computer</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="config">
+                        <label for="config">Configure Git with your name and email</label>
+                    </div>
+                </div>
+
+                <h3>Essential Git Commands to Remember</h3>
+                <div class="code-block">
+<strong>Initial Setup:</strong>
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+<strong>Check Git Version:</strong>
+git --version
+                </div>
+
+                <div class="interactive-demo">
+                    <h4>🎮 Try It Out!</h4>
+                    <p>Click the button below to simulate your first Git setup:</p>
+                    <div class="demo-buttons">
+                        <button class="btn" onclick="simulateGitSetup()">Run Git Setup</button>
+                    </div>
+                    <div id="setup-output" style="margin-top: 15px; font-family: monospace; background: #24292f; color: #f0f6fc; padding: 10px; border-radius: 5px; display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Repositories Section -->
+            <div class="section" id="repositories">
+                <h2>📂 Working with Repositories</h2>
+                
+                <h3>What is a Repository?</h3>
+                <p>A repository (or "repo") is like a project folder that contains all your project files and the entire history of changes made to those files.</p>
+
+                <h3>Creating Your First Repository</h3>
+                <div class="checklist">
+                    <h4>📝 Repository Creation Steps</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="new-repo">
+                        <label for="new-repo">Click "New" or "+" button on GitHub</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="repo-name">
+                        <label for="repo-name">Choose a descriptive repository name</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="repo-desc">
+                        <label for="repo-desc">Add a clear description</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="readme">
+                        <label for="readme">Initialize with a README file</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="gitignore">
+                        <label for="gitignore">Add a .gitignore file for your language</label>
+                    </div>
+                </div>
+
+                <h3>Cloning a Repository</h3>
+                <p>Cloning creates a local copy of a repository on your computer.</p>
+                
+                <div class="command">
+git clone https://github.com/username/repository-name.git
+cd repository-name
+                </div>
+
+                <div class="tip">
+                    <strong>💡 Quick Tip:</strong> Use HTTPS for public repos, SSH for private repos you own. SSH is faster and more secure!
+                </div>
+
+                <h3>Repository Structure</h3>
+                <div class="code-block">
+my-project/
+├── README.md          (Project description)
+├── .gitignore        (Files to ignore)
+├── LICENSE           (Project license)
+├── src/              (Source code)
+├── docs/             (Documentation)
+└── tests/            (Test files)
+                </div>
+            </div>
+
+            <!-- Commits Section -->
+            <div class="section" id="commits">
+                <h2>💾 Commits and Changes</h2>
+                
+                <h3>Understanding the Git Workflow</h3>
+                <div class="git-visual">
+                    <div class="git-stage" id="working">
+                        <strong>Working Directory</strong>
+                        <br>Your local files
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="git-stage" id="staging">
+                        <strong>Staging Area</strong>
+                        <br>Files ready to commit
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="git-stage" id="repository">
+                        <strong>Repository</strong>
+                        <br>Committed changes
+                    </div>
+                </div>
+
+                <h3>Making Your First Commit</h3>
+                <div class="command">
+# Check status of your files
+git status
+
+# Add files to staging area
+git add filename.txt
+# Or add all files
+git add .
+
+# Commit with a message
+git commit -m "Add initial project files"
+
+# Push to GitHub
+git push origin main
+                </div>
+
+                <div class="tip">
+                    <strong>💡 Commit Message Best Practices:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Start with a verb (Add, Fix, Update, Remove)</li>
+                        <li>Keep it under 50 characters for the title</li>
+                        <li>Be specific about what changed</li>
+                    </ul>
+                </div>
+
+                <div class="interactive-demo">
+                    <h4>🎮 Git Workflow Simulator</h4>
+                    <p>Click through the workflow to see how files move through Git stages:</p>
+                    <div class="demo-buttons">
+                        <button class="btn" onclick="simulateWorkflow('working')">Edit Files</button>
+                        <button class="btn" onclick="simulateWorkflow('staging')">Git Add</button>
+                        <button class="btn" onclick="simulateWorkflow('repository')">Git Commit</button>
+                        <button class="btn btn-secondary" onclick="resetWorkflow()">Reset</button>
+                    </div>
+                </div>
+
+                <h3>Viewing History</h3>
+                <div class="command">
+# View commit history
+git log --oneline
+
+# See what changed in last commit
+git show
+
+# See differences before committing
+git diff
+                </div>
+            </div>
+
+            <!-- Branching Section -->
+            <div class="section" id="branching">
+                <h2>🌳 Branching and Merging</h2>
+                
+                <h3>Why Use Branches?</h3>
+                <p>Branches allow you to work on different features or experiments without affecting the main codebase. Think of them as parallel universes for your code!</p>
+
+                <h3>Working with Branches</h3>
+                <div class="command">
+# Create and switch to a new branch
+git checkout -b feature-branch
+# Or using newer syntax
+git switch -c feature-branch
+
+# List all branches
+git branch
+
+# Switch between branches
+git switch main
+git switch feature-branch
+
+# Push new branch to GitHub
+git push -u origin feature-branch
+                </div>
+
+                <h3>Merging Branches</h3>
+                <div class="command">
+# Switch to main branch
+git switch main
+
+# Merge feature branch
+git merge feature-branch
+
+# Delete branch after merging
+git branch -d feature-branch
+git push origin --delete feature-branch
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Merge Conflicts:</strong> When two branches change the same lines of code, Git can't automatically merge them. You'll need to manually resolve conflicts by editing the files and choosing which changes to keep.
+                </div>
+
+                <h3>Branch Naming Conventions</h3>
+                <div class="code-block">
+feature/user-authentication
+bugfix/login-error
+hotfix/security-patch
+docs/api-documentation
+                </div>
+            </div>
+
+            <!-- Collaboration Section -->
+            <div class="section" id="collaboration">
+                <h2>🤝 Collaboration and Pull Requests</h2>
+                
+                <h3>Forking a Repository</h3>
+                <p>Forking creates your own copy of someone else's repository under your GitHub account.</p>
+
+                <div class="checklist">
+                    <h4>📝 Contributing to Open Source</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="fork-repo">
+                        <label for="fork-repo">Fork the repository on GitHub</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="clone-fork">
+                        <label for="clone-fork">Clone your fork to your computer</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="create-branch">
+                        <label for="create-branch">Create a new branch for your changes</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="make-changes">
+                        <label for="make-changes">Make your changes and commit them</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="push-changes">
+                        <label for="push-changes">Push changes to your fork</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="pull-request">
+                        <label for="pull-request">Create a Pull Request</label>
+                    </div>
+                </div>
+
+                <h3>Creating a Pull Request</h3>
+                <p>A Pull Request (PR) is a way to propose changes to a repository. It allows others to review your code before it gets merged.</p>
+
+                <div class="tip">
+                    <strong>💡 Great Pull Request Tips:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>Write a clear title and description</li>
+                        <li>Reference related issues</li>
+                        <li>Keep changes focused and small</li>
+                        <li>Test your changes thoroughly</li>
+                    </ul>
+                </div>
+
+                <h3>Code Review Process</h3>
+                <div class="code-block">
+1. Submit Pull Request
+2. Automated tests run (if configured)
+3. Team members review code
+4. Address feedback and make changes
+5. Approve and merge
+6. Delete feature branch
+                </div>
+
+                <h3>Keeping Your Fork Updated</h3>
+                <div class="command">
+# Add original repo as upstream
+git remote add upstream https://github.com/original/repo.git
+
+# Fetch latest changes
+git fetch upstream
+
+# Switch to main and merge
+git switch main
+git merge upstream/main
+
+# Push updates to your fork
+git push origin main
+                </div>
+            </div>
+
+            <!-- Advanced Features Section -->
+            <div class="section" id="advanced">
+                <h2>🚀 Advanced GitHub Features</h2>
+                
+                <h3>GitHub Issues</h3>
+                <p>Issues are used to track bugs, feature requests, and other tasks. They're like a to-do list for your project.</p>
+                
+                <div class="code-block">
+# Link commits to issues
+git commit -m "Fix login bug - closes #123"
+
+# Reference issues in commits
+git commit -m "Update user validation (see #45)"
+                </div>
+
+                <h3>GitHub Actions (CI/CD)</h3>
+                <p>Automate testing, building, and deployment of your code with GitHub Actions.</p>
+
+                <div class="code-block">
+# .github/workflows/ci.yml
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: npm test
+                </div>
+
+                <h3>Useful GitHub Features</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="wiki">
+                        <label for="wiki"><strong>Wiki:</strong> Create documentation pages</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="pages">
+                        <label for="pages"><strong>GitHub Pages:</strong> Host websites for free</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="releases">
+                        <label for="releases"><strong>Releases:</strong> Package and distribute your software</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="projects">
+                        <label for="projects"><strong>Projects:</strong> Organize work with Kanban boards</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="security">
+                        <label for="security"><strong>Security:</strong> Automated vulnerability scanning</label>
+                    </div>
+                </div>
+
+                <h3>Command Line Shortcuts</h3>
+                <div class="command">
+# Undo last commit (keep changes)
+git reset --soft HEAD~1
+
+# Stash changes temporarily
+git stash
+git stash pop
+
+# Create alias for common commands
+git config --global alias.co checkout
+git config --global alias.st status
+                </div>
+
+                <div class="tip">
+                    <strong>🎉 Congratulations!</strong> You've completed the GitHub tutorial. Start with small projects and gradually work your way up to contributing to larger open-source projects!
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Happy coding! 💻 Remember: the best way to learn Git is by using it regularly.</p>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        const sections = document.querySelectorAll('.section');
+        const progress = document.getElementById('progress');
+        
+        let completedSections = new Set();
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetSection = tab.dataset.section;
+                
+                // Remove active classes
+                tabs.forEach(t => t.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Add active classes
+                tab.classList.add('active');
+                document.getElementById(targetSection).classList.add('active');
+                
+                // Mark section as visited
+                completedSections.add(targetSection);
+                updateProgress();
+            });
+        });
+
+        // Progress tracking
+        function updateProgress() {
+            const progressPercent = (completedSections.size / tabs.length) * 100;
+            progress.style.width = progressPercent + '%';
+        }
+
+        // Checklist functionality
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    this.parentElement.style.textDecoration = 'line-through';
+                    this.parentElement.style.opacity = '0.7';
+                } else {
+                    this.parentElement.style.textDecoration = 'none';
+                    this.parentElement.style.opacity = '1';
+                }
+            });
+        });
+
+        // Interactive demonstrations
+        function simulateGitSetup() {
+            const output = document.getElementById('setup-output');
+            output.style.display = 'block';
+            
+            const commands = [
+                '$ git config --global user.name "Your Name"',
+                '$ git config --global user.email "your.email@example.com"',
+                '$ git --version',
+                'git version 2.34.1',
+                '✅ Git setup complete!'
+            ];
+            
+            output.innerHTML = '';
+            commands.forEach((cmd, index) => {
+                setTimeout(() => {
+                    output.innerHTML += cmd + '\n';
+                    output.scrollTop = output.scrollHeight;
+                }, index * 800);
+            });
+        }
+
+        function simulateWorkflow(stage) {
+            // Reset all stages
+            document.querySelectorAll('.git-stage').forEach(s => {
+                s.classList.remove('highlight');
+            });
+            
+            // Highlight current stage
+            document.getElementById(stage).classList.add('highlight');
+            
+            // Show appropriate message
+            const messages = {
+                working: 'Files modified in working directory',
+                staging: 'Files added to staging area (git add)',
+                repository: 'Changes committed to repository (git commit)'
+            };
+            
+            // You could add a message display here
+        }
+
+        function resetWorkflow() {
+            document.querySelectorAll('.git-stage').forEach(s => {
+                s.classList.remove('highlight');
+            });
+        }
+
+        // Initialize progress
+        completedSections.add('basics');
+        updateProgress();
+
+        // Add some animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+            });
+            
+            // Show first section
+            const activeSection = document.querySelector('.section.active');
+            if (activeSection) {
+                activeSection.style.opacity = '1';
+                activeSection.style.transform = 'translateY(0)';
+            }
+        });
+
+        // Smooth scrolling for better UX
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            document.body.style.backgroundPosition = `center ${rate}px`;
+        });
+    </script>
+</body>
+</html>
